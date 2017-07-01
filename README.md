@@ -5,6 +5,15 @@ Hackathon Starter API
 
 **Fork From**: https://github.com/sahat/hackathon-starter
 
-An API from the hackathon starter.
+An API built from the hackathon starter.
 
-Our aim is create a minimalistic starter for an api only! The main difference is there are no views or rendered page. THIS IS AN API ONLY!
+Our aim is create a minimalistic starter for an api only! This is built ontop of the hackathon starter.
+
+
+## TODO
+
+- [x] Remove Views
+- [ ] Return responses instead of rendering pages.
+- [ ] Remove rendering packages.
+- [ ] Refactor app.js
+- [ ] Setup testing.
