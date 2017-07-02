@@ -19,6 +19,7 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
+const Nuxt = require('nuxt');
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
@@ -108,7 +109,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
  * Primary app routes.
  */
 app.post('/login', userController.postLogin);
-app.post('/logout', userController.logout);
+app.get('/logout', userController.logout);
 app.post('/forgot', userController.postForgot);
 app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
@@ -173,6 +174,23 @@ app.get('/auth/pinterest', passport.authorize('pinterest', { scope: 'read_public
 app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRedirect: '/login' }), (req, res) => {
   res.redirect('/api/pinterest');
 });
+
+// Import and Set Nuxt.js options
+let config = require('./nuxt.config.js')
+config.dev = !(process.env.NODE_ENV === 'production')
+
+// Init Nuxt.js
+const nuxtjs = new Nuxt(config);
+app.use(nuxtjs.render);
+
+// Build only in dev mode
+if (config.dev) {
+  nuxtjs.build()
+  .catch((error) => {
+    console.error(error) // eslint-disable-line no-console
+    process.exit(1)
+  })
+}
 
 /**
  * Error Handler.

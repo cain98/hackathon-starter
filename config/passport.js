@@ -513,7 +513,7 @@ exports.isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.send({
+  res.status(400).send({
     success: false,
     message: 'You are not authenticated.'
   });

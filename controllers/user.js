@@ -105,7 +105,7 @@ exports.postSignup = (req, res, next) => {
  */
 exports.getAccount = (req, res) => {
   res.send({
-    succes: true,
+    success: true,
     data: { user: req.user }
    })
 };
