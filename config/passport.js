@@ -13,6 +13,9 @@ const OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
 const User = require('../models/User');
 
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -22,6 +25,22 @@ passport.deserializeUser((id, done) => {
     done(err, user);
   });
 });
+
+var opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
+opts.secretOrKey = process.env.SESSION_SECRET;
+passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+  User.findOne({_id: jwt_payload.id}, function(err, user) {
+    if (err) {
+      return done(err, false);
+    }
+    if (user) {
+      done(null, user);
+    } else {
+      done(null, false);
+    }
+  });
+}));
 
 /**
  * Sign in using Email and Password.

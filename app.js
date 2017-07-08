@@ -115,11 +115,11 @@ app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
 app.post('/signup', userController.postSignup);
 app.post('/contact', contactController.postContact);
-app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
-app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
-app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
-app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
-app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+app.get('/account', passport.authenticate('jwt', { session: false }), userController.getAccount);
+app.post('/account/profile',passport.authenticate('jwt', { session: false }), userController.postUpdateProfile);
+app.post('/account/password',passport.authenticate('jwt', { session: false }), userController.postUpdatePassword);
+app.post('/account/delete',passport.authenticate('jwt', { session: false }), userController.postDeleteAccount);
+app.get('/account/unlink/:provider',passport.authenticate('jwt', { session: false }), userController.getOauthUnlink);
 
 /**
  * API examples routes.

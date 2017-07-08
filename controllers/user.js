@@ -3,6 +3,7 @@ const crypto = bluebird.promisifyAll(require('crypto'));
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 /**
  * POST /login
@@ -32,9 +33,14 @@ exports.postLogin = (req, res, next) => {
     }
     req.logIn(user, (err) => {
       if (err) { return next(err); }
+      // Create token if the password matched and no error was thrown
+      var token = jwt.sign({id: user._id}, process.env.SESSION_SECRET, {
+        expiresIn: 10080 // in seconds
+      });
       res.send({
         success: true,
-        message: 'Success! You are logged in.'
+        message: 'Success! You are logged in.',
+        token: 'JWT ' + token
       })
     });
   })(req, res, next);
