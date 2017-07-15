@@ -26,12 +26,15 @@ module.exports = {
   ** Add axios globally
   */
   build: {
-    vendor: ['axios'],
+    vendor: ['axios', 'vue-form'],
     /*
     ** Run ESLINT on save
     */
   },
   loading: {
     color: '#0275d8',
-  }
+  },
+  plugins: [
+    '~plugins/vue-form'
+  ]
 }

@@ -42,15 +42,31 @@
           </button>
         </div>
         <div class="modal-body">
-            <div class="form-group">
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
+         <vue-form :state="formstate" v-model="formstate" @submit.prevent="onSubmit">
+           <validate auto-label class="form-group required-field" :class="fieldClassName(formstate.email)">
+             <label>Email</label>
+             <input type="email" name="email" class="form-control" required v-model.lazy="model.email">
+
+             <field-messages auto-label name="email" show="$touched || $submitted" class="form-control-feedback">
+               <div slot="required">Email is a required field</div>
+               <div slot="email">Email is invalid</div>
+             </field-messages>
+
+            </validate>
+
+            <validate auto-label class="form-group required-field" :class="fieldClassName(formstate.password)">
+              <label>Password</label>
+              <input type="password" name="password" class="form-control" required v-model.lazy="model.password">
+
+              <field-messages auto-label name="password" show="$touched || $submitted" class="form-control-feedback">
+                <div slot="required">Password is a required field</div>
+              </field-messages>
+
+             </validate>
+            <div class="">
+              <button class="btn btn-primary" type="submit">Submit</button>
             </div>
-            <div class="form-group">
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            <button class="btn btn-primary">
-              Sign In
-            </button>
+          </vue-form>
             <hr />
             <button class="btn btn-default mt-2" style="width: 100%;">
               Sign In With Facebook
@@ -72,10 +88,32 @@
 </template>
 
 <script>
-import Navbar from '~/components/Navbar.vue'
+import '~plugins/vue-form';
 export default {
-  components: {
-    Navbar
+  data() {
+    return {
+      formstate: {},
+      model: {
+        name: '',
+        password: '',
+      }
+    }
+  },
+  methods: {
+    fieldClassName: function (field) {
+      if(!field) {
+        return '';
+      }
+      if((field.$touched || field.$submitted) && field.$valid) {
+        return 'has-success';
+      }
+      if((field.$touched || field.$submitted) && field.$invalid) {
+        return 'has-danger';
+      }
+    },
+    onSubmit: function() {
+      console.log(this.formstate.$valid);
+    }
   }
-}
+  }
 </script>

@@ -80,5 +80,7 @@ let app = {
 
 // Includes & Inject external plugins
 
+require('~plugins/vue-form')
+
 
 export { app, router, NuxtError }
